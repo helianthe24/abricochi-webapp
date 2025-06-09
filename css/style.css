@@ -1,0 +1,294 @@
+/* Base reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Quicksand', 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #f3e6f5 100%);
+  min-height: 100vh;
+  color: #44324a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 20px rgba(120, 95, 140, 0.10);
+  padding: 2rem 1.5rem;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  margin: 2rem;
+}
+
+h1 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.02em;
+  color: #6a3fb6;
+}
+
+#abricot-container {
+  margin-bottom: 1.3rem;
+}
+
+#abricot-sprite {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 1rem;
+  border: 2.5px solid #e3caf8;
+  box-shadow: 0 2px 10px rgba(106, 63, 182, 0.08);
+  background: #faf7fd;
+  margin-bottom: 0.4rem;
+}
+
+#abrico-message {
+  font-size: 1.05rem;
+  color: #7e5aa6;
+  margin-top: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.gauges {
+  margin-bottom: 1.3rem;
+}
+
+.gauge {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.gauge label {
+  flex-shrink: 0;
+  width: 70px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #845ec2;
+  text-align: right;
+}
+
+progress {
+  flex-grow: 1;
+  height: 18px;
+  appearance: none;
+  border-radius: 10px;
+  background: #f1eaf9;
+  box-shadow: 0 1px 4px rgba(160, 122, 214, 0.05);
+  overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+  background: #f1eaf9;
+  border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #b8ecbc 0%, #845ec2 100%);
+  border-radius: 10px;
+  transition: width 0.3s;
+}
+
+progress::-moz-progress-bar {
+  background: linear-gradient(90deg, #b8ecbc 0%, #845ec2 100%);
+  border-radius: 10px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+button {
+  background: linear-gradient(135deg, #e3caf8, #b8ecbc);
+  color: #44324a;
+  border: none;
+  border-radius: 1rem;
+  font-size: 1.07rem;
+  font-weight: 700;
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(106, 63, 182, 0.08);
+  transition: background 0.18s, transform 0.09s;
+}
+button:active {
+  background: linear-gradient(135deg, #b8ecbc, #e3caf8);
+  transform: scale(0.98);
+}
+button:focus {
+  outline: 2.5px solid #845ec2;
+  outline-offset: 2px;
+}
+
+/* Responsive (mobile friendly) */
+@media (max-width: 480px) {
+  .container {
+    padding: 1.2rem 0.2rem;
+    max-width: 97vw;
+  }
+  #abricot-sprite {
+    width: 80px;
+    height: 80px;
+  }
+  h1 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Wiggle (content) */
+@keyframes wiggle {
+  0% { transform: rotate(-4deg);}
+  20% { transform: rotate(4deg);}
+  40% { transform: rotate(-4deg);}
+  60% { transform: rotate(4deg);}
+  80% { transform: rotate(-4deg);}
+  100% { transform: rotate(0deg);}
+}
+.wiggle {
+  animation: wiggle 0.6s ease-in-out;
+}
+
+/* Tremble (triste/malade) */
+@keyframes tremble {
+  0%, 100% { transform: translateX(0);}
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px);}
+  20%, 40%, 60%, 80% { transform: translateX(4px);}
+}
+.tremble {
+  animation: tremble 0.8s cubic-bezier(.36,.07,.19,.97);
+}
+
+/* Rebond (pour les câlins ou les actions heureuses) */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0);}
+  30% { transform: translateY(-14px);}
+  60% { transform: translateY(6px);}
+}
+.bounce {
+  animation: bounce 0.6s cubic-bezier(.36,.07,.19,.97);
+}
+
+#action-feedback {
+  position: absolute;
+  /* Départ du coin du sprite */
+  left: 28px;    /* Décale plus à droite par rapport à #abricot-container */
+  top: 0px;      /* Décale plus bas */
+  transform: none;
+  min-width: 42px;
+  min-height: 36px;
+  background: #fff;
+  border: 2.5px solid #cbb7ec;
+  border-radius: 1.5em 1.5em 1.5em 0.7em / 1.5em 1.5em 1.5em 1.1em;
+  box-shadow: 0 2px 16px #b8ecbc33;
+  font-size: 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.18s;
+  padding: 0.2em 0.4em 0.1em 0.4em;
+  filter: drop-shadow(0 2px 10px #845ec299);
+}
+
+/* Bulle de pensée */
+#action-feedback::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 48px; /* Décale la "queue" pour qu'elle soit vers le sprite */
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border: 2.5px solid #cbb7ec;
+  border-radius: 50%;
+  box-shadow: 0 1px 5px #b8ecbc33;
+  z-index: -1;
+}
+
+@keyframes pop-effect {
+  0%   { transform: scale(0.7); opacity: 0; }
+  25%  { transform: scale(1.2); opacity: 1; }
+  50%  { transform: scale(1.1); opacity: 1; }
+  75%  { transform: scale(1);   opacity: 1; }
+  100% { transform: scale(0.7); opacity: 0; }
+}
+
+#action-feedback.show {
+  animation: pop-effect 0.8s;
+  opacity: 1;
+}
+
+
+#abricot-container {
+  margin-bottom: 1.3rem;
+  position: relative; /* Ajout pour positionner l’effet */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#alert-badge {
+  position: absolute;
+  right: 45px;
+  top: 24px;
+  width: 36px;
+  height: 36px;
+  background: #ff5864cc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.45rem;
+  color: #fff;
+  font-weight: 900;
+  box-shadow: 0 2px 8px #ff586466;
+  border: 2.5px solid #fff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transition: opacity 0.22s, transform 0.12s;
+}
+
+#alert-badge.active {
+  opacity: 1;
+  transform: scale(1.18) rotate(-10deg);
+  animation: badge-alert-pop 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+@keyframes badge-alert-pop {
+  0% { transform: scale(0.7) rotate(-10deg);}
+  40% { transform: scale(1.18) rotate(-10deg);}
+  100% { transform: scale(1.18) rotate(-10deg);}
+}
+
+@keyframes card-alert-pulse {
+  0% { box-shadow: 0 4px 20px rgba(120, 95, 140, 0.10);}
+  30% { box-shadow: 0 0 24px 6px #ff586466;}
+  60% { box-shadow: 0 0 28px 10px #ff586433;}
+  100% { box-shadow: 0 4px 20px rgba(120, 95, 140, 0.10);}
+}
+
+@keyframes card-alert-shake {
+  0%, 100% { transform: translateX(0);}
+  15%, 45%, 75% { transform: translateX(-5px);}
+  30%, 60%, 90% { transform: translateX(6px);}
+}
+.card-alert {
+  animation:
+    card-alert-shake 0.7s infinite,
+    card-alert-pulse 1s infinite;
+}
+

@@ -1,0 +1,3 @@
+Plusieurs emojis différents (nourritures, coeurs) qui changent quand tu cliques sur les boutons
+
+state.hunger = 5; updateGauges(); updateMood();

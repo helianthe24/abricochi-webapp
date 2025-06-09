@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abricochi 🐱</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Prends soin d’Abricot 🐾</h1>
+
+      <!-- Zone du sprite / humeur d'Abricot -->
+      <div id="abricot-container">
+        <img
+          id="abricot-sprite"
+          src="assets/img/abricot-content.png"
+          alt="Abricot heureux"
+        />
+        <div id="action-feedback"></div>
+        <div id="alert-badge"></div>
+        <p id="abrico-message">Abricot ronronne de bonheur !</p>
+      </div>
+
+      <!-- Jauges -->
+      <div class="gauges">
+        <div class="gauge">
+          <label for="hunger">Faim</label>
+          <progress id="hunger" max="100" value="100"></progress>
+        </div>
+        <div class="gauge">
+          <label for="energy">Énergie</label>
+          <progress id="energy" max="100" value="100"></progress>
+        </div>
+        <div class="gauge">
+          <label for="affection">Affection</label>
+          <progress id="affection" max="100" value="100"></progress>
+        </div>
+      </div>
+
+      <!-- Boutons d'action -->
+      <div class="actions">
+        <button id="feed-btn">🍖 Nourrir</button>
+        <button id="sleep-btn">💤 Faire dormir</button>
+        <button id="cuddle-btn">🤗 Câliner</button>
+      </div>
+    </main>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
