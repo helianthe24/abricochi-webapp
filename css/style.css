@@ -9,12 +9,41 @@
 
 body {
   font-family: 'Quicksand', 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #f8fafc 0%, #f3e6f5 100%);
-  min-height: 100vh;
   color: #44324a;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  /* Nouveau gradient animé */
+  background: linear-gradient(125deg,
+  rgba(248,250,252,0.94) 0%,
+  rgba(243,230,245,0.89) 25%,
+  rgba(224,180,255,0.82) 55%,
+  rgba(184,236,188,0.78) 85%,
+  rgba(255,222,230,0.85) 100%
+  );
+  background-size: 340% 340%;
+  animation: bg-gradient-move 24s ease-in-out infinite alternate;
+}
+
+@keyframes bg-gradient-move {
+  0%   { background-position: 0% 30%; }
+  40%  { background-position: 100% 70%; }
+  100% { background-position: 15% 100%; }
+}
+
+
+#main-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 900px;   /* Ajoute une largeur max */
+  margin: 0 auto;     /* Centre horizontalement */
+  min-height: 100vh;
+  padding-top: 3vh;
 }
 
 .container {
@@ -25,7 +54,9 @@ body {
   max-width: 360px;
   width: 100%;
   text-align: center;
-  margin: 2rem;
+  margin: 0;
+  position: relative;  /* important pour le z-index */
+  z-index: 2;
 }
 
 h1 {
@@ -38,7 +69,8 @@ h1 {
 
 #abricot-container {
   margin-bottom: 1.3rem;
-}
+  }
+
 
 #abricot-sprite {
   width: 120px;
@@ -131,6 +163,33 @@ button:focus {
   outline-offset: 2px;
 }
 
+#sound-toggle {
+  position: absolute;
+  top: -1.3rem;   /* Place-le plus haut, au-dessus de la carte */
+  right: -1.3rem; /* Décale vers la droite */
+  background: #f1eaf9;
+  border: 2px solid #e3caf8;
+  border-radius: 1.2em;
+  font-size: 1.35rem;
+  padding: 0.32em 0.6em;
+  color: #6a3fb6;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #845ec22a;
+  transition: background 0.16s, border 0.16s, top 0.15s, right 0.15s;
+  z-index: 15; /* Toujours au-dessus */
+}
+
+#sound-toggle[aria-pressed="false"] {
+  opacity: 0.7;
+}
+#sound-toggle[aria-pressed="true"] {
+  background: #b8ecbc;
+  color: #44324a;
+  border-color: #b8ecbc;
+  opacity: 1;
+}
+
+
 /* Responsive (mobile friendly) */
 @media (max-width: 480px) {
   .container {
@@ -145,6 +204,22 @@ button:focus {
     font-size: 1.25rem;
   }
 }
+
+/* Responsive : empile en colonne sur mobile/tablette */
+@media (max-width: 900px) {
+  #main-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  #stats {
+    max-width: 97vw;
+    min-width: unset;
+    margin-bottom: 1.2rem;
+  }
+}
+
 
 /* Wiggle (content) */
 @keyframes wiggle {
@@ -292,3 +367,149 @@ button:focus {
     card-alert-pulse 1s infinite;
 }
 
+#stats {
+  margin-top: 2rem;
+  background: #faf7fd;
+  border-radius: 1rem;
+  box-shadow: 0 1px 6px #b8ecbc22;
+  min-width: 220px;
+  max-width: 280px;
+  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.1rem 1rem;
+  font-size: 1.04rem;
+  color: #845ec2;
+  z-index: 2;
+  position: relative;
+}
+#stats h2 {
+  font-size: 1.18rem;
+  margin-bottom: 0.7rem;
+  font-weight: 700;
+  color: #6a3fb6;
+}
+#stats ul {
+  list-style: none;
+  padding: 0;
+}
+#stats li {
+  margin-bottom: 0.2em;
+}
+#reset-stats {
+  margin-top: 0.6em;
+  background: #ffe8fa;
+  border: 1.5px solid #e3caf8;
+  border-radius: 0.7em;
+  color: #845ec2;
+  padding: 0.35em 1.1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s, border 0.12s;
+}
+#reset-stats:hover {
+  background: #e3caf8;
+  border-color: #b8ecbc;
+  color: #44324a;
+}
+
+/* Animation pulse/glow sur la jauge */
+.gauge-anim {
+  animation: gauge-flash 0.55s cubic-bezier(.22,1,.36,1);
+  box-shadow: 0 0 0 0 #b8ecbc;
+}
+
+#hunger.gauge-anim {
+  animation: gauge-flash-hunger 0.55s cubic-bezier(.22,1,.36,1);
+}
+#energy.gauge-anim {
+  animation: gauge-flash-energy 0.55s cubic-bezier(.22,1,.36,1);
+}
+#affection.gauge-anim {
+  animation: gauge-flash-affection 0.55s cubic-bezier(.22,1,.36,1);
+}
+
+@keyframes gauge-flash-hunger {
+  0% { box-shadow: 0 0 0 0 #f4a261; }
+  40% { box-shadow: 0 0 16px 8px #f4a261cc; transform: scale(1.1); }
+  100% { box-shadow: 0 0 0 0 #f4a261; transform: scale(1);}
+}
+@keyframes gauge-flash-energy {
+  0% { box-shadow: 0 0 0 0 #90caf9; }
+  40% { box-shadow: 0 0 16px 8px #90caf9cc; transform: scale(1.1);}
+  100% { box-shadow: 0 0 0 0 #90caf9; transform: scale(1);}
+}
+@keyframes gauge-flash-affection {
+  0% { box-shadow: 0 0 0 0 #f48fb1; }
+  40% { box-shadow: 0 0 16px 8px #f48fb1cc; transform: scale(1.1);}
+  100% { box-shadow: 0 0 0 0 #f48fb1; transform: scale(1);}
+}
+
+#bg-confetti {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-particle {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0.19;
+  filter: blur(0.2px);
+  pointer-events: none;
+  will-change: transform, opacity;
+  user-select: none;
+  transition: opacity 0.5s;
+}
+
+/* Apparition douce du titre */
+@keyframes title-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.93);
+    letter-spacing: 0.08em;
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(4px) scale(1.04);
+    letter-spacing: 0.05em;
+  }
+  85% {
+    transform: translateY(-4px) scale(1.01);
+    letter-spacing: 0.04em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    letter-spacing: normal;
+  }
+}
+
+@keyframes title-bounce {
+  0%   { transform: scale(0.85); opacity: 0; }
+  60%  { transform: scale(1.10); opacity: 1; }
+  80%  { transform: scale(0.97);}
+  100% { transform: scale(1);}
+}
+.title-bounce {
+  animation: title-bounce 0.86s cubic-bezier(.56,2.2,.51,.87);
+}
+
+#pawprints {
+  display: block;
+  margin: 0 auto 0.6rem auto;
+  font-size: 1.6rem;
+  color: #6a3fb6;
+  animation: paw-vibe 2.7s ease-in-out infinite alternate;
+  /* Si tu utilises un emoji, garde color: inherit; */
+}
+
+@keyframes paw-vibe {
+  0%   { transform: translateY(0px) scale(1);}
+  45%  { transform: translateY(-4px) scale(1.09);}
+  100% { transform: translateY(0px) scale(1);}
+}

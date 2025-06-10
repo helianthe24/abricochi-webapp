@@ -1,9 +1,62 @@
+window.addEventListener("DOMContentLoaded", () => {
+  const title = document.querySelector("h1");
+  if (title) {
+    title.classList.add("title-bounce");
+  }
+});
+
 // Paramètres de base pour chaque jauge (0 = vide, 100 = plein)
 const DEFAULT_STATE = {
   hunger: 100,
   energy: 100,
   affection: 100,
 };
+
+const DEFAULT_STATS = {
+  adoptedAt: Date.now(), // Timestamp du début de l’aventure
+  feedCount: 0,
+  sleepCount: 0,
+  cuddleCount: 0,
+  lastAction: null,
+};
+
+// Paramètres de chute pour chaque jauge
+const DECAY_SETTINGS = {
+  hunger: { interval: 90000, amount: 3 }, // toutes les 1,5 min, baisse de 3
+  energy: { interval: 180000, amount: 2 }, // toutes les 3 min, baisse de 2
+  affection: { interval: 240000, amount: 1 }, // toutes les 4 min, baisse de 1
+};
+
+const ACTION_EMOJIS = {
+  hunger: ["🍗", "🥩", "🍣", "🍕", "🥫", "🥕", "🧀", "🥐", "🍞", "🥚", "🥛"],
+  energy: ["😴", "💤", "🛌", "🌙", "☁️", "🪶"],
+  affection: ["💖", "💗", "🥰", "😽", "💝", "🧡", "💞", "😻", "❤️"],
+};
+
+function decayGauge(jauge) {
+  state[jauge] = Math.max(0, state[jauge] - DECAY_SETTINGS[jauge].amount);
+  updateGauges();
+  saveState(state);
+  updateMood();
+}
+
+function loadStats() {
+  const saved = localStorage.getItem("abricot-stats");
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return { ...DEFAULT_STATS };
+    }
+  }
+  return { ...DEFAULT_STATS };
+}
+
+function saveStats(stats) {
+  localStorage.setItem("abricot-stats", JSON.stringify(stats));
+}
+
+let stats = loadStats();
 
 const SPRITES = {
   content: [
@@ -31,6 +84,8 @@ const SPRITES = {
     "assets/img/abricot-ill-4.png",
   ],
 };
+
+let soundEnabled = true;
 
 function randomSprite(stateName) {
   const list = SPRITES[stateName];
@@ -89,8 +144,9 @@ function decayGauges() {
   updateMood();
 }
 
-// Lancement du timer
-setInterval(decayGauges, DECAY_INTERVAL);
+Object.keys(DECAY_SETTINGS).forEach((jauge) => {
+  setInterval(() => decayGauge(jauge), DECAY_SETTINGS[jauge].interval);
+});
 
 // Paramètres d’augmentation par action
 const ACTION_AMOUNT = 25;
@@ -102,9 +158,27 @@ function performAction(jauge) {
   saveState(state);
   updateMood();
   showActionFeedback(jauge);
-  if (jauge === "affection") {
+  animateGauge(jauge);
+
+  // Joue les sons et animations comme avant
+  // Sons et animations…
+  if (jauge === "hunger") {
+    playSound("sound-eat");
+    stats.feedCount++;
+    stats.lastAction = "Nourri Abricot";
+  } else if (jauge === "energy") {
+    playSound("sound-sleep");
+    stats.sleepCount++;
+    stats.lastAction = "Abricot a dormi";
+  } else if (jauge === "affection") {
+    playSound("sound-meow");
     playSpriteAnimation("bounce");
+    stats.cuddleCount++;
+    stats.lastAction = "Câliné Abricot";
+    launchConfetti("affection");
   }
+  saveStats(stats);
+  updateStatsDisplay();
 }
 
 // Lier chaque bouton à son action
@@ -180,17 +254,145 @@ updateMood();
 
 function showActionFeedback(type) {
   const feedback = document.getElementById("action-feedback");
-  let icon = "✨";
-  if (type === "hunger") icon = "🍓";
-  else if (type === "energy") icon = "💤";
-  else if (type === "affection") icon = "💖";
+  let icons = ACTION_EMOJIS[type] || ["✨"];
+  // Tire un emoji au hasard dans la liste
+  let icon = icons[Math.floor(Math.random() * icons.length)];
   feedback.textContent = icon;
-  feedback.classList.remove("show"); // Si l’animation est déjà en cours
-  void feedback.offsetWidth; // Pour forcer le reflow et rejouer l’anim
+  feedback.classList.remove("show");
+  void feedback.offsetWidth;
   feedback.classList.add("show");
-  // Optionnel : efface après l’animation pour éviter les soucis
   setTimeout(() => {
     feedback.classList.remove("show");
     feedback.textContent = "";
   }, 800);
 }
+
+function playSound(id) {
+  if (!soundEnabled) return;
+  const audio = document.getElementById(id);
+  if (!audio) return;
+  // Volume personnalisé
+  if (id === "sound-sleep") {
+    audio.volume = 0.25; // 50% du volume
+  } else {
+    audio.volume = 1.0; // 100% pour les autres
+  }
+  audio.currentTime = 0;
+  audio.play();
+}
+
+// Chargement de l'état du son depuis le localStorage
+function loadSoundSetting() {
+  const stored = localStorage.getItem("abricot-sound-enabled");
+  soundEnabled = stored === null ? true : stored === "true";
+  updateSoundToggle();
+}
+
+function updateSoundToggle() {
+  const btn = document.getElementById("sound-toggle");
+  if (!btn) return;
+  btn.setAttribute("aria-pressed", soundEnabled);
+  btn.textContent = soundEnabled ? "🔊" : "🔈";
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  localStorage.setItem("abricot-sound-enabled", soundEnabled);
+  updateSoundToggle();
+}
+
+// Ajoute l’écouteur sur le bouton (à la fin du script)
+document.getElementById("sound-toggle").addEventListener("click", toggleSound);
+
+// Initialise au chargement
+loadSoundSetting();
+
+function formatDuration(ms) {
+  // Retourne une durée humaine ex: "1j 2h 5min"
+  const totalSec = Math.floor(ms / 1000);
+  const days = Math.floor(totalSec / 86400);
+  const hours = Math.floor((totalSec % 86400) / 3600);
+  const mins = Math.floor((totalSec % 3600) / 60);
+  let str = "";
+  if (days) str += `${days}j `;
+  if (hours) str += `${hours}h `;
+  str += `${mins}min`;
+  return str;
+}
+
+function updateStatsDisplay() {
+  const now = Date.now();
+  document.getElementById(
+    "stat-adopted"
+  ).textContent = `Adopté·e depuis ${formatDuration(now - stats.adoptedAt)}`;
+  document.getElementById(
+    "stat-feed"
+  ).textContent = `Nourri·e ${stats.feedCount} fois`;
+  document.getElementById(
+    "stat-sleep"
+  ).textContent = `A dormi ${stats.sleepCount} fois`;
+  document.getElementById(
+    "stat-cuddle"
+  ).textContent = `Câliné·e ${stats.cuddleCount} fois`;
+  document.getElementById("stat-last").textContent = stats.lastAction
+    ? `Dernière action : ${stats.lastAction}`
+    : "";
+}
+
+document.getElementById("reset-stats").addEventListener("click", () => {
+  stats = { ...DEFAULT_STATS, adoptedAt: Date.now() };
+  saveStats(stats);
+  updateStatsDisplay();
+});
+
+function animateGauge(jauge) {
+  let bar;
+  if (jauge === "hunger") bar = document.getElementById("hunger");
+  if (jauge === "energy") bar = document.getElementById("energy");
+  if (jauge === "affection") bar = document.getElementById("affection");
+  if (!bar) return;
+  bar.classList.remove("gauge-anim");
+  void bar.offsetWidth; // Forcer le reflow pour rejouer l'anim
+  bar.classList.add("gauge-anim");
+  setTimeout(() => bar.classList.remove("gauge-anim"), 500); // Retire après anim
+}
+
+const BG_PARTICLES = ["💖", "✨", "🩷", "💜", "💙", "⭐", "🌸", "🤍"]; // Mets ce que tu veux !
+
+function spawnBgParticle() {
+  const container = document.getElementById("bg-confetti");
+  if (!container) return;
+  const el = document.createElement("span");
+  el.className = "bg-particle";
+  el.textContent =
+    BG_PARTICLES[Math.floor(Math.random() * BG_PARTICLES.length)];
+  // Position de départ aléatoire
+  const left = Math.random() * 100;
+  el.style.left = left + "vw";
+  el.style.top = "-3vh";
+  el.style.fontSize = 1.1 + Math.random() * 2.2 + "rem";
+  el.style.opacity = 0.38 + Math.random() * 0.37;
+  // Animation vers le bas
+  const duration = 5000 + Math.random() * 5000; // entre 5s et 10s
+  el.animate(
+    [
+      { transform: "translateY(0) scale(1)", opacity: el.style.opacity },
+      {
+        transform: `translateY(${110 + Math.random() * 8}vh) scale(${
+          0.85 + Math.random() * 0.3
+        })`,
+        opacity: 0,
+      },
+    ],
+    {
+      duration,
+      easing: "linear",
+      fill: "forwards",
+    }
+  );
+  container.appendChild(el);
+  setTimeout(() => el.remove(), duration + 500);
+}
+
+// Lance la pluie en continu
+setInterval(spawnBgParticle, 200); // plus bas = plus de confettis

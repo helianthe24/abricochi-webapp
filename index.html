@@ -7,45 +7,71 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <main class="container">
-      <h1>Prends soin d’Abricot 🐾</h1>
+    <div id="bg-confetti"></div>
+    <div id="main-wrapper">
+      <main class="container">
+        <h1>Prends soin d’Abricot</h1>
+        <div id="pawprints">🐾</div>
+        <button
+          id="sound-toggle"
+          aria-label="Activer/Désactiver le son"
+          title="Son On/Off"
+        >
+          🔊
+        </button>
 
-      <!-- Zone du sprite / humeur d'Abricot -->
-      <div id="abricot-container">
-        <img
-          id="abricot-sprite"
-          src="assets/img/abricot-content.png"
-          alt="Abricot heureux"
-        />
-        <div id="action-feedback"></div>
-        <div id="alert-badge"></div>
-        <p id="abrico-message">Abricot ronronne de bonheur !</p>
-      </div>
-
-      <!-- Jauges -->
-      <div class="gauges">
-        <div class="gauge">
-          <label for="hunger">Faim</label>
-          <progress id="hunger" max="100" value="100"></progress>
+        <div id="abricot-container">
+          <img
+            id="abricot-sprite"
+            src="assets/img/abricot-content.png"
+            alt="Abricot heureux"
+          />
+          <div id="action-feedback"></div>
+          <div id="alert-badge"></div>
+          <p id="abrico-message">Abricot ronronne de bonheur !</p>
         </div>
-        <div class="gauge">
-          <label for="energy">Énergie</label>
-          <progress id="energy" max="100" value="100"></progress>
+        <!-- Jauges -->
+        <div class="gauges">
+          <div class="gauge">
+            <label for="hunger">Faim</label>
+            <progress id="hunger" max="100" value="100"></progress>
+          </div>
+          <div class="gauge">
+            <label for="energy">Énergie</label>
+            <progress id="energy" max="100" value="100"></progress>
+          </div>
+          <div class="gauge">
+            <label for="affection">Affection</label>
+            <progress id="affection" max="100" value="100"></progress>
+          </div>
         </div>
-        <div class="gauge">
-          <label for="affection">Affection</label>
-          <progress id="affection" max="100" value="100"></progress>
+
+        <!-- Boutons d'action -->
+        <div class="actions">
+          <button id="feed-btn">🍓 Nourrir</button>
+          <button id="sleep-btn">💤 Faire dormir</button>
+          <button id="cuddle-btn">🤗 Câliner</button>
         </div>
-      </div>
-
-      <!-- Boutons d'action -->
-      <div class="actions">
-        <button id="feed-btn">🍖 Nourrir</button>
-        <button id="sleep-btn">💤 Faire dormir</button>
-        <button id="cuddle-btn">🤗 Câliner</button>
-      </div>
-    </main>
-
+      </main>
+      <section id="stats" aria-label="Statistiques d’Abricot">
+        <h2>Statistiques</h2>
+        <ul>
+          <li id="stat-adopted"></li>
+          <li id="stat-feed"></li>
+          <li id="stat-sleep"></li>
+          <li id="stat-cuddle"></li>
+          <li id="stat-last"></li>
+        </ul>
+        <button id="reset-stats">Remettre à zéro</button>
+      </section>
+    </div>
     <script src="js/main.js"></script>
+    <audio id="sound-meow" src="assets/sounds/meow.mp3" preload="auto"></audio>
+    <audio id="sound-eat" src="assets/sounds/eat.mp3" preload="auto"></audio>
+    <audio
+      id="sound-sleep"
+      src="assets/sounds/sleep.mp3"
+      preload="auto"
+    ></audio>
   </body>
 </html>

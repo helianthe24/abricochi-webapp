@@ -1,3 +1,20 @@
-Plusieurs emojis différents (nourritures, coeurs) qui changent quand tu cliques sur les boutons
 
-state.hunger = 5; updateGauges(); updateMood();
+- L'utilisateur peut juste spam les boutons pour augmenter les statistiques
+
+- Pas de son si la barre n'augmente pas
+
+- Ajout d'un système d'authentification et leaderboard ?
+
+- Ajout d'un bouton “?” qui affiche les règles ou conseils du jeu (parfait pour le portfolio). Et qui explique pourquoi ce jeu.
+
+- Vérifier les fichiers -> Audit Lighthouse
+
+- Ecran de chargement personnalisé 
+
+- Derniers polish graphiques
+
+- Permettre au joueur de changer le thème couleur du site
+
+    Ombres colorées, animation douce sur la carte entière, micro-particules qui pop quand Abricot change d’humeur…
+    
+state.hunger = 5; updateGauges(); updateMood(); showActionFeedback(jauge); animateGauge(jauge);
