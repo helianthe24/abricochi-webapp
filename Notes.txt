@@ -1,20 +1,52 @@
+# 📒 Notes de développement — Abricochi
 
-- L'utilisateur peut juste spam les boutons pour augmenter les statistiques
+## ✅ Terminé
 
-- Pas de son si la barre n'augmente pas
+- ✅ Anti-spam des boutons (cooldown 2s indépendant)
+- ✅ Sons conditionnels (ne se déclenchent que si la jauge augmente)
+- ✅ Nom personnalisé du chat (stocké et affiché partout)
+- ✅ Système de mort (jauge à 0 pendant 3 min)
+- ✅ Redémarrage propre avec nouveau chat
+- ✅ Cimetière des chats (top 10 + trophées + compteur)
+- ✅ Système de cartes modules `.dashboard-card`
+- ✅ Mise en page responsive (`.dashboard-modules`)
+- ✅ Carte “Statistiques” fonctionnelle
+- ✅ Carte “❓ Aide / Règles” avec emojis et sections claires
 
-- Ajout d'un système d'authentification et leaderboard ?
+---
 
-- Ajout d'un bouton “?” qui affiche les règles ou conseils du jeu (parfait pour le portfolio). Et qui explique pourquoi ce jeu.
+## 🔜 À faire
 
-- Vérifier les fichiers -> Audit Lighthouse
+### 🎯 Objectifs prioritaires (v1.0.0)
 
-- Ecran de chargement personnalisé 
+- [ ] 🎨 Changement de thème (dark mode, couleurs custom)
+- [ ] ⏳ Écran de chargement animé au démarrage
+- [ ] 🧪 Audit Lighthouse et amélioration des performances
+- [ ] 🔍 Accessibilité : navigation clavier + screen readers
+- [ ] 📦 Compression/minification des fichiers (prod)
+- [ ] 🖼️ Conversion des images en WebP
+- [ ] 📈 Ajout d’un `CHANGELOG.md` et versioning propre
 
-- Derniers polish graphiques
+### 💡 Idées bonus (v1.x)
 
-- Permettre au joueur de changer le thème couleur du site
+- [ ] 💬 Système de mini-dialogues d’Abricochi selon son humeur
+- [ ] 🎁 Module "Objets trouvés" ou "Souvenirs"
+- [ ] 🏅 Succès à débloquer (ex: “10 jours de survie”, “100 câlins”, etc.)
+- [ ] 🧩 Mini-événements aléatoires (rêves, pensées, météo imaginaire…)
+- [ ] 🌐 Leaderboard entre navigateurs (via clé unique ou nom joueur·euse)
+- [ ] 📤 Bouton “Partager mon chat” (fiche HTML ou export image)
 
-    Ombres colorées, animation douce sur la carte entière, micro-particules qui pop quand Abricot change d’humeur…
-    
-state.hunger = 5; updateGauges(); updateMood(); showActionFeedback(jauge); animateGauge(jauge);
+---
+
+## ✍️ Astuces de dev
+
+```js
+// Forcer la mort 
+state.hunger = 0;
+updateGauges();
+updateMood();
+```
+
+---
+
+Notes générées le 5 août 2025.

@@ -10,7 +10,7 @@
     <div id="bg-confetti"></div>
     <div id="main-wrapper">
       <main class="container">
-        <h1>Prends soin d’Abricot</h1>
+        <h1>Prends soin d'Abricot</h1>
         <div id="pawprints">🐾</div>
         <button
           id="sound-toggle"
@@ -53,17 +53,82 @@
           <button id="cuddle-btn">🤗 Câliner</button>
         </div>
       </main>
-      <section id="stats" aria-label="Statistiques d’Abricot">
-        <h2>Statistiques</h2>
-        <ul>
-          <li id="stat-adopted"></li>
-          <li id="stat-feed"></li>
-          <li id="stat-sleep"></li>
-          <li id="stat-cuddle"></li>
-          <li id="stat-last"></li>
-        </ul>
-        <button id="reset-stats">Remettre à zéro</button>
-      </section>
+
+      <!-- Dashboard avec modules -->
+      <div class="dashboard-modules">
+        <section
+          id="stats"
+          class="dashboard-card"
+          aria-label="Statistiques d'Abricot"
+        >
+          <h2>📊 Statistiques</h2>
+          <ul>
+            <li id="stat-adopted"></li>
+            <li id="stat-feed"></li>
+            <li id="stat-sleep"></li>
+            <li id="stat-cuddle"></li>
+            <li id="stat-last"></li>
+          </ul>
+          <button id="reset-stats">Remettre à zéro</button>
+        </section>
+
+        <section
+          id="graveyard"
+          class="dashboard-card"
+          aria-label="Cimetière des chats"
+        >
+          <h2>🪦 Cimetière</h2>
+          <div id="graveyard-counter"></div>
+          <div id="graveyard-content">
+            <p id="graveyard-empty">
+              Aucun chat au cimetière pour le moment...
+            </p>
+            <ul id="graveyard-list"></ul>
+          </div>
+        </section>
+
+        <section
+          id="help"
+          class="dashboard-card"
+          aria-label="Aide et règles du jeu"
+        >
+          <h2>❓ Aide / Règles</h2>
+          <div id="help-content">
+            <p class="help-section">
+              <span class="help-emoji">🐱</span>
+              <strong>Objectif :</strong> Garde ton chat en vie le plus
+              longtemps possible !
+            </p>
+            <p class="help-section">
+              <span class="help-emoji">⏳</span>
+              <strong>Mécaniques :</strong> Les jauges baissent automatiquement
+              avec le temps.
+            </p>
+            <p class="help-section">
+              <span class="help-emoji">🍓</span>
+              <strong>Nourrir :</strong> Remonte la jauge de faim.
+            </p>
+            <p class="help-section">
+              <span class="help-emoji">💤</span>
+              <strong>Dormir :</strong> Remonte la jauge d'énergie.
+            </p>
+            <p class="help-section">
+              <span class="help-emoji">🤗</span>
+              <strong>Câliner :</strong> Remonte la jauge d'affection.
+            </p>
+            <p class="help-section">
+              <span class="help-emoji">⚠️</span>
+              <strong>Attention :</strong> Si une jauge reste à 0 pendant 3
+              minutes, ton chat mourra !
+            </p>
+            <p class="help-section">
+              <span class="help-emoji">🪦</span>
+              <strong>Cimetière :</strong> Consulte l'historique de tes anciens
+              compagnons.
+            </p>
+          </div>
+        </section>
+      </div>
     </div>
     <script src="js/main.js"></script>
     <audio id="sound-meow" src="assets/sounds/meow.mp3" preload="auto"></audio>
